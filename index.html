@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pink Floyd — концерт у Жмеринці</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(160deg, #1a1028 0%, #2b1540 45%, #0e1a2b 100%);
+      color: #f8f5ff;
+    }
+
+    .event-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(8px);
+    }
+
+    .prism {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, #ff4d6d, #ffd166, #06d6a0, #4cc9f0, #7b2cbf);
+      clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    }
+
+    .form-control,
+    .form-control:focus {
+      background-color: rgba(255, 255, 255, 0.92);
+    }
+  </style>
+</head>
+<body>
+  <main class="container py-4 py-md-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-8 col-xl-7">
+        <article class="event-card rounded-4 p-4 p-md-5 shadow">
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <div class="prism flex-shrink-0" aria-hidden="true"></div>
+            <div>
+              <p class="text-uppercase small mb-1 text-info">Живий концерт</p>
+              <h1 class="h2 mb-0">Pink Floyd у Жмеринці</h1>
+            </div>
+          </div>
+
+          <p class="lead">
+            Легендарна група Pink Floyd виступає з програмою класичних альбомів:
+            від The Dark Side of the Moon до The Wall. Вечір світла, звуку і знайомих композицій просто неба.
+          </p>
+
+          <dl class="row mb-4">
+            <dt class="col-sm-4">Дата</dt>
+            <dd class="col-sm-8">21 листопада 2026, 19:00</dd>
+            <dt class="col-sm-4">Місце</dt>
+            <dd class="col-sm-8 mb-0">Міський парк культури, Жмеринка</dd>
+          </dl>
+
+          <h2 class="h4 mb-3">Реєстрація</h2>
+
+          <div id="form-message" class="alert d-none" role="alert"></div>
+
+          <form id="registration-form" novalidate>
+            <div class="mb-3">
+              <label for="name" class="form-label">Ім'я</label>
+              <input type="text" class="form-control" id="name" name="name" autocomplete="name" placeholder="Ваше ім'я">
+            </div>
+
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" name="email" autocomplete="email" placeholder="name@example.com">
+            </div>
+
+            <div class="mb-4">
+              <label for="participants" class="form-label">Кількість учасників</label>
+              <input type="number" class="form-control" id="participants" name="participants" min="1" step="1" placeholder="1">
+            </div>
+
+            <button type="submit" class="btn btn-info px-4">Зареєструватися</button>
+          </form>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const form = document.getElementById("registration-form");
+    const message = document.getElementById("form-message");
+
+    function showMessage(text, isSuccess) {
+      message.textContent = text;
+      message.classList.remove("d-none", "alert-success", "alert-danger");
+      message.classList.add(isSuccess ? "alert-success" : "alert-danger");
+    }
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const participants = Number(document.getElementById("participants").value);
+
+      if (!name || !email) {
+        showMessage("Помилка: заповніть ім'я та email.", false);
+        return;
+      }
+
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        showMessage("Помилка: введіть коректний email.", false);
+        return;
+      }
+
+      if (!(participants > 0)) {
+        showMessage("Помилка: кількість учасників має бути більшою за нуль.", false);
+        return;
+      }
+
+      showMessage("Реєстрація успішна!", true);
+      form.reset();
+    });
+  </script>
+</body>
+</html>
