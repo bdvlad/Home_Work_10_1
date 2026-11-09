@@ -78,6 +78,30 @@
 
             <button type="submit" class="btn btn-info px-4">Зареєструватися</button>
           </form>
+
+          <hr class="border-light opacity-25 my-4">
+
+          <h2 class="h4 mb-3">Калькулятор вартості квитків</h2>
+          <p>Один квиток коштує 400 грн. Від 3 до 4 квитків — знижка 10%, від 5 квитків — 20%.</p>
+
+          <form id="price-form">
+            <div class="mb-3">
+              <label for="tickets" class="form-label">Кількість квитків</label>
+              <input type="number" class="form-control" id="tickets" name="tickets" min="1" step="1" placeholder="1">
+            </div>
+            <button type="submit" class="btn btn-info px-4">Розрахувати</button>
+          </form>
+
+          <div id="price-message" class="alert alert-danger d-none mt-3 mb-0" role="alert"></div>
+
+          <dl id="price-result" class="row mt-4 mb-0 d-none">
+            <dt class="col-sm-5">Початкова вартість</dt>
+            <dd class="col-sm-7" id="base-cost"></dd>
+            <dt class="col-sm-5">Знижка</dt>
+            <dd class="col-sm-7" id="discount-amount"></dd>
+            <dt class="col-sm-5">Підсумкова сума</dt>
+            <dd class="col-sm-7 mb-0 fw-semibold" id="total-cost"></dd>
+          </dl>
         </article>
       </div>
     </div>
@@ -119,6 +143,45 @@
 
       showMessage("Реєстрація успішна!", true);
       form.reset();
+    });
+
+    const priceForm = document.getElementById("price-form");
+    const priceMessage = document.getElementById("price-message");
+    const priceResult = document.getElementById("price-result");
+    const ticketPrice = 400;
+
+    priceForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const tickets = Number(document.getElementById("tickets").value);
+
+      if (!(tickets > 0)) {
+        priceMessage.textContent = "Помилка: введіть кількість квитків більшу за нуль.";
+        priceMessage.classList.remove("d-none");
+        priceResult.classList.add("d-none");
+        return;
+      }
+
+      const baseCost = ticketPrice * tickets;
+      let discountRate = 0;
+
+      if (tickets >= 5) {
+        discountRate = 0.2;
+      } else if (tickets >= 3 && tickets <= 4) {
+        discountRate = 0.1;
+      } else {
+        discountRate = 0;
+      }
+
+      const discountAmount = baseCost * discountRate;
+      const totalCost = baseCost - discountAmount;
+
+      document.getElementById("base-cost").textContent = baseCost + " грн";
+      document.getElementById("discount-amount").textContent = discountAmount + " грн (" + (discountRate * 100) + "%)";
+      document.getElementById("total-cost").textContent = totalCost + " грн";
+
+      priceMessage.classList.add("d-none");
+      priceResult.classList.remove("d-none");
     });
   </script>
 </body>
